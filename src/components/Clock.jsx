@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import Hand from "./Hand";
 import Hours from "./Hours";
+import Theme from "./Theme";
 import getRotaionDegress from "../utils/degress";
 const Clock = () => {
   //   const [hour, setHour] = useState(new Date().getHours());
   //   const [minute, setMinute] = useState(new Date().getMinutes());
   //   const [second, setSecond] = useState(new Date().getSeconds());
+  const [theme, setTheme] = useState("light");
   const [running, setRunning] = useState(true);
   const [degrees, setDegress] = useState(
     getRotaionDegress(
@@ -14,7 +16,12 @@ const Clock = () => {
       new Date().getSeconds()
     )
   );
-
+  const changeTheme = () => {
+    let light = "light";
+    let dark = "dark";
+    if (theme === light) setTheme(dark);
+    else setTheme(light);
+  };
   const interval = () => {
     return setInterval(() => {
       const time = new Date();
@@ -39,11 +46,12 @@ const Clock = () => {
   }, [running]);
 
   return (
-    <>
+    <div className={`main main-${theme}`}>
+      <Theme onChangeTheme={changeTheme} theme={theme} />
       <div className="clock">
-        <Hand type="hour" degree={degrees.hourRotaion} />
-        <Hand type="minute" degree={degrees.minuteRotaion} />
-        <Hand type="second" degree={degrees.secondRotaion} />
+        <Hand type="hour" degree={degrees.hourRotaion} theme={theme} />
+        <Hand type="minute" degree={degrees.minuteRotaion} theme={theme} />
+        <Hand type="second" degree={degrees.secondRotaion} theme={theme} />
         <Hours />
       </div>
       {/* <button
@@ -53,7 +61,7 @@ const Clock = () => {
       >
         Toggle Running
       </button> */}
-    </>
+    </div>
   );
 };
 
